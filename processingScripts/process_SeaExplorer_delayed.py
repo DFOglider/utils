@@ -112,8 +112,7 @@ outname = seaexplorer.raw_to_timeseries(indir=rawncmergedir,
                                         kind='raw', 
                                         profile_filt_time=20, 
                                         profile_min_time=100, 
-                                        fnamesuffix=fnamesuffix,
-					deadreckon=True)
+                                        fnamesuffix=fnamesuffix)
 addGPS(inname=outname)
 # make profile netcdf files for ioos gdac
 ncprocess.extract_timeseries_profiles(inname=outname, 
