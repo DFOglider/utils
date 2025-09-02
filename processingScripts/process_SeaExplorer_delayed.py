@@ -24,10 +24,10 @@ def addGPS(inname):
         ### 116 - transmitting
         dr = src.variables.get('DeadReckoning')[:]
         ns = src.variables.get('NavState')[:]
-        ok = (dr == 0) & ~dr.mask & (ns == 116) & ~ns.mask
+        ok = (dr == 0) & (ns == 116)
     else: # use longitude and latitude values with navstate
         ns = src.variables.get('NavState')[:]
-        ok = (ns == 116) & ~ns.mask
+        ok = (ns == 116)
     lon = src.variables.get('longitude')[:]
     lat = src.variables.get('latitude')[:]
     longps = pd.Series(np.ma.masked_array(data=lon.data, mask=ok.mask, fill_value=np.nan).filled())
