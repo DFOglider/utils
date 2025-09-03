@@ -30,9 +30,9 @@ def addGPS(inname):
         ok = (ns == 116)
     lon = src.variables.get('longitude')[:]
     lat = src.variables.get('latitude')[:]
-    longps = pd.Series(np.ma.masked_array(data=lon.data, mask=ok.mask, fill_value=np.nan).filled())
+    longps = pd.Series(np.ma.masked_array(data=lon.data, mask=~ok.data, fill_value=np.nan).filled())
     longps.interpolate(method='linear', inplace=True)
-    latgps = pd.Series(np.ma.masked_array(data=lat.data, mask=ok.mask, fill_value=np.nan).filled())
+    latgps = pd.Series(np.ma.masked_array(data=lat.data, mask=~ok.data, fill_value=np.nan).filled())
     latgps.interpolate(method='linear', inplace=True)
     # add to file
     ## get dimensions from existing variable
