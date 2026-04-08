@@ -46,7 +46,8 @@ logging.basicConfig(filename = 'postProcess_delayed.log', level='INFO')
 toExclude = ['potential_density',
              'potential_temperature',
              'distance_over_ground',
-             'density']
+             'density',
+             'depth']
 # define yaml file
 deploymentyaml = 'deployment.yaml'
 # define and create (if needed) directories
