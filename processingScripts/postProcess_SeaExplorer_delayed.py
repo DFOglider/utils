@@ -20,7 +20,7 @@ def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, repla
                     name, (len(dimension) if not dimension.isunlimited() else None))
             # check for PSAL and salinity - if both present, add 'salinity' to 'toExclude'
             # (this means that the CTD is most likely a LEGATO and pyglider added salinity)
-            if 'PSAL' in list(src.variables) & 'salinity' in list(src.variables):
+            if 'PSAL' in list(src.variables) and 'salinity' in list(src.variables):
                 toExclude.append('salinity')
             # copy all file data except for the excluded
             for name, variable in src.variables.items(): 
