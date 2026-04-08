@@ -8,7 +8,7 @@ import pyglider.utils as pyutils
 #   which will exclude some variables defined by 'toexclude'
 #   and rename some variables
 #   note that renaming 'salinity' to 'PSAL' is hard coded
-def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, replaceName):
+def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, replaceName, deploymentVars):
     for i in range(len(fileIn)): 
         print(f"Reading in file {fileIn[i]} and creating new file {fileOut[i]}.")
         with nc.Dataset(fileIn[i]) as src, nc.Dataset(fileOut[i], "w") as dst:
@@ -35,9 +35,11 @@ def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, repla
             if not('PSAL' in list(src.variables)):
                 print(f"Changing variable name from salinity to PSAL") 
                 dst.renameVariable(oldname = 'salinity', newname = 'PSAL')
+                dst.setncatts(deploymentVars['PSAL'])
             if 'oxygen_concentration' in list(src.variables):
                 print(f"Changing variable name from oxygen_concentration to DOXY")
                 dst.renameVariable(oldname = 'oxygen_concentration', newname = 'DOXY')
+                dst.setncatts(deploymentVars['DOXY'])
 
 logging.basicConfig(filename = 'postProcess_delayed.log', level='INFO')
 # define derived variables that will be removed from nc files
@@ -99,5 +101,6 @@ for dirs in lookdirs:
                           fileOut=fileOut,
                           toExclude=toExclude,
                           originalReplaceName=originalReplaceName,
-                          replaceName=replaceName)
+                          replaceName=replaceName,
+                          deploymentVars=ncvar)
 
