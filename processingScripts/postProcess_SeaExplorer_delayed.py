@@ -47,11 +47,32 @@ def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, repla
 
 logging.basicConfig(filename = 'postProcess_delayed.log', level='INFO')
 # define derived variables that will be removed from nc files
-toExclude = ['potential_density',
+toExclude = ['potential_density', # derived variables hardcoded in pyglider
              'potential_temperature',
              'distance_over_ground',
              'density',
-             'depth']
+             'depth',
+             'u', # (from here down) profile variables hardcoded in pyglider
+             'v', # they're geared towards IOOS glider dac
+             'lat_uv',
+             'lon_uv',
+             'time_uv',
+             'lon',
+             'lat',
+             'profile_time',
+             'profile_lon',
+             'profile_lat',
+             'platform',
+             'instrument_ctd',
+             'trajectory',
+             'temperature_qc',
+             'pressure_qc',
+             'conductivity_qc',
+             'salinity_qc',
+             'density_qc',
+             'lon_qc',
+             'lat_qc',
+             'depth_qc']
 # define yaml file
 deploymentyaml = 'deployment.yaml'
 # define and create (if needed) directories
