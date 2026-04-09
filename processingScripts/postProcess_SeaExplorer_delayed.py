@@ -46,7 +46,7 @@ def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, repla
                 dst.setncatts(deploymentVars['DOXY'])
             if 'profile_direction' in list(src.variables):
                 print(f"Changing variable name from profile_direction to PROFILE_DIRECTION")
-                dst.renameVariable(oldname='profileDirection', newname='PROFILE_DIRECTION')
+                dst.renameVariable(oldname='profile_direction', newname='PROFILE_DIRECTION')
                 dst.variables['PROFILE_DIRECTION'].long_name="Vertical direction of profile"
 
 logging.basicConfig(filename = 'postProcess_delayed.log', level='INFO')
