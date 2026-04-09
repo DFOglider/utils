@@ -44,6 +44,10 @@ def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, repla
                 print(f"Changing variable name from oxygen_concentration to DOXY")
                 dst.renameVariable(oldname = 'oxygen_concentration', newname = 'DOXY')
                 dst.setncatts(deploymentVars['DOXY'])
+            if 'profileDirection' in list(src.variables):
+                print(f"Changing variable name from profileDirection to PROFILE_DIRECTION")
+                dst.renameVariable(oldname='profileDirection', newname='PROFILE_DIRECTION')
+                dst.long_name="Vertical direction of profile"
 
 logging.basicConfig(filename = 'postProcess_delayed.log', level='INFO')
 # define derived variables that will be removed from nc files
