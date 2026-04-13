@@ -36,7 +36,7 @@ def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, repla
                 newname = replaceName[i]
                 print(f"Changing variable name from {origname} to {newname}.")
                 dst.renameVariable(oldname = origname, newname = newname)
-            if not('PSAL' in list(src.variables)):
+            if 'salinity' in list(dst.variables):
                 print(f"Setting attrs and changing variable name from salinity to PSAL")
                 dst.setncatts(deploymentVars['salinity'])
                 dst.renameVariable(oldname = 'salinity', newname = 'PSAL')
