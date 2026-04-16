@@ -123,8 +123,8 @@ tsfile = os.listdir(path=l0tsdir)[0]
 tsfilepath = l0tsdir + tsfile
 ts = nc.Dataset(tsfilepath)
 tspressure = ts.variables['pressure'][:]
-maxpressure = round(max(tspressure))
-minpressure = round(min(tspressure))
+maxpressure = round(tspressure.max())
+minpressure = round(tspressure.min())
 addGlobalAtts = dict(pressure_maximum = maxpressure,
                      pressure_minimum = minpressure)
 # define which directories to iterate through to create
