@@ -8,12 +8,15 @@ import pyglider.utils as pyutils
 #   which will exclude some variables defined by 'toexclude'
 #   and rename some variables
 #   note that renaming 'salinity' to 'PSAL' is hard coded
-def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, replaceName, deploymentVars):
+def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, replaceName, deploymentVars, addGlobalAtts=None):
     for i in range(len(fileIn)): 
         print(f"Reading in file {fileIn[i]} and creating new file {fileOut[i]}.")
         with nc.Dataset(fileIn[i]) as src, nc.Dataset(fileOut[i], "w") as dst:
             # copy global attributes all at once via dictionary
             dst.setncatts(src.__dict__)
+            if addGlobalAtts is not None:
+                print(f"adding additional global attributes")
+                dst.setncatts(addGlobalAtts)
             # copy dimensions
             for name, dimension in src.dimensions.items():
                 dst.createDimension(
@@ -114,6 +117,16 @@ for i in ['time', 'timebase', 'keep_variables', 'interpolate']:
         varnames.remove(i)
 originalReplaceName = [x for x in varnames if 'replaceName' in ncvar[x].keys()]
 replaceName = [ncvar[x]['replaceName'] for x in originalReplaceName]
+# get maximum and minimum pressure values to place as global attribute in file
+## pull it from the time-series file
+tsfile = os.listdir(path=l0tsdir)[0]
+tsfilepath = l0tsdir + tsfile
+ts = nc.Dataset(tsfilepath)
+tspressure = ts.variables['pressure'][:]
+maxpressure = round(max(tspressure))
+minpressure = round(min(tspressure))
+addGlobalAtts = dict(pressure_maximum = maxpressure,
+                     pressure_minimum = minpressure)
 # define which directories to iterate through to create
 #   new post processed files
 #   iterate through each type of file
@@ -136,5 +149,6 @@ for dirs in lookdirs:
                           toExclude=toExclude,
                           originalReplaceName=originalReplaceName,
                           replaceName=replaceName,
-                          deploymentVars=ncvar)
+                          deploymentVars=ncvar,
+                          addGlobalAtts=addGlobalAtts)
 
