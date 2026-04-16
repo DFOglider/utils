@@ -35,6 +35,13 @@ for x in gldPath:
                 else :
                     shutil.copy2(src=src,
                                  dst=dst)
+            navomit = [f for f in navfiles if re.search('.*\.1\.gz', f)]
+            if navomit.__len__() != 0:
+                for f in navomit:
+                    dstomit = pathlib.Path(rawdir + '/' + f)
+                    if os.path.exists(dstomit):
+                        print(f"Removing file {f}")
+                        os.remove(dstomit)
     else:
         print(f"Expected path to nav files, {navpath} does not exist.")
     # copy data from pld into rawdir
@@ -56,6 +63,13 @@ for x in gldPath:
                 else:
                     shutil.copy2(src=src,
                                  dst=dst)
+            pldomit = [f for f in pldiles if re.search('.*\.1\.gz', f)]
+            if pldomit.__len__() != 0:
+                for f in pldomit:
+                    dstomit = pathlib.Path(rawdir + '/' + f)
+                    if os.path.exists(dstomit):
+                        print(f"Removing file {f}")
+                        os.remove(dstomit)
     else:
         print(f"Expected path to pld files, {pldpath} does not exist.")
 
