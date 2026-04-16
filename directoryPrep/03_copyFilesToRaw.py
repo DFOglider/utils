@@ -63,7 +63,7 @@ for x in gldPath:
                 else:
                     shutil.copy2(src=src,
                                  dst=dst)
-            pldomit = [f for f in pldiles if re.search('.*\.1\.gz', f)]
+            pldomit = [f for f in pldfiles if re.search('.*\.1\.gz', f)]
             if pldomit.__len__() != 0:
                 for f in pldomit:
                     dstomit = pathlib.Path(rawdir + '/' + f)
