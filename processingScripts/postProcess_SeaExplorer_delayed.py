@@ -58,6 +58,10 @@ def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, repla
                 print(f"Changing variable name from profile_direction to PROFILE_DIRECTION")
                 dst.renameVariable(oldname='profile_direction', newname='PROFILE_DIRECTION')
                 dst.variables['PROFILE_DIRECTION'].long_name="Vertical direction of profile"
+            if 'DeadReckoning' in list(dst.variables):
+                print(f"Setting DeadReckoning values and meanings to attributes")
+                dst.variables['DeadReckoning'].values="0, 1"
+                dst.variables['DeadReckoning'].meanings="GPS coordinates received from the GPS sensor, GPS coordinates computed with dead reckoning"
 
 logging.basicConfig(filename = 'postProcess_delayed.log', level='INFO')
 # define derived variables that will be removed from nc files
