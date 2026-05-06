@@ -8,7 +8,7 @@ import pyglider.utils as pyutils
 #   which will exclude some variables defined by 'toexclude'
 #   and rename some variables
 #   note that renaming 'salinity' to 'PSAL' is hard coded
-def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, replaceName, deploymentVars, addGlobalAtts=None):
+def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, replaceName, deploymentVars, addGlobalAtts=None, omitAncillary=False):
     for i in range(len(fileIn)): 
         print(f"Reading in file {fileIn[i]} and creating new file {fileOut[i]}.")
         with nc.Dataset(fileIn[i]) as src, nc.Dataset(fileOut[i], "w") as dst:
@@ -33,6 +33,9 @@ def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, repla
                     # copy variable attributes all at once via dictionary
                     dst[name].setncatts(src[name].__dict__)
                     dst[name][:] = src[name][:]
+                    if omitAncillary and 'ancillary_variables' in list(src[name].__dict__.keys()):
+                        print(f"Removing ancillary_variables from variable {name}.")
+                        del dst[name].ancillary_variables
             # change variable name
             for i in range(len(originalReplaceName)):
                 origname = originalReplaceName[i]
@@ -150,5 +153,6 @@ for dirs in lookdirs:
                           originalReplaceName=originalReplaceName,
                           replaceName=replaceName,
                           deploymentVars=ncvar,
-                          addGlobalAtts=addGlobalAtts)
+                          addGlobalAtts=addGlobalAtts,
+                          omitAncillary=True)
 
