@@ -16,13 +16,17 @@ for x in gldPath:
     if not exists:
         print(f"Creating raw directory")
         os.makedirs(rawdir)
+    # get mission number
+    missionNumber = re.sub('./GLD\\d+SEA\\d+M(\\d+)', '\\1', x)
     # copy data from nav into rawdir
     navpath = x + '/' + 'nav/logs'
     ## check that it exists
     navexists = os.path.exists(navpath)
+    ## define navpattern
+    navpattern = '.*\\.'+ missionNumber + '\\..*gli\\.sub.*'
     if navexists:
         allnavfiles = [f for f in os.listdir(navpath) if not f.startswith('.')]
-        navfiles = [f for f in allnavfiles if re.search('.*gli\\.sub.*', f)]
+        navfiles = [f for f in allnavfiles if re.search(navpattern, f)]
         print(f"Copying nav files to raw for {x}")
         if navfiles.__len__() == 0:
             print(f"No nav files found")
@@ -35,7 +39,7 @@ for x in gldPath:
                 else :
                     shutil.copy2(src=src,
                                  dst=dst)
-            navomit = [f for f in navfiles if re.search('.*\.1\.gz', f)]
+            navomit = [f for f in navfiles if re.search('.*\\.1\\.gz', f)]
             if navomit.__len__() != 0:
                 for f in navomit:
                     dstomit = pathlib.Path(rawdir + '/' + f)
@@ -48,9 +52,11 @@ for x in gldPath:
     pldpath = x + '/' + 'pld/logs'
     ## check that it exists
     pldexists = os.path.exists(pldpath)
+    ## define pldpattern
+    pldpattern = '.*\\.'+ missionNumber + '\\..*pld1\\.raw.*'
     if pldexists:
         allpldfiles = [f for f in os.listdir(pldpath) if not f.startswith('.')]
-        pldfiles = [f for f in allpldfiles if re.search('.*pld1\\.raw.*', f)]
+        pldfiles = [f for f in allpldfiles if re.search(pldpattern, f)]
         print(f"Copying pld files to raw for {x}")
         if pldfiles.__len__() == 0:
             print(f"No pld files found")
@@ -63,7 +69,7 @@ for x in gldPath:
                 else:
                     shutil.copy2(src=src,
                                  dst=dst)
-            pldomit = [f for f in pldfiles if re.search('.*\.1\.gz', f)]
+            pldomit = [f for f in pldfiles if re.search('.*\\.1\\.gz', f)]
             if pldomit.__len__() != 0:
                 for f in pldomit:
                     dstomit = pathlib.Path(rawdir + '/' + f)
@@ -72,5 +78,3 @@ for x in gldPath:
                         os.remove(dstomit)
     else:
         print(f"Expected path to pld files, {pldpath} does not exist.")
-
-
