@@ -9,8 +9,8 @@ import pyglider.utils as pyutils
 #   and rename some variables
 #   note that renaming 'salinity' to 'PSAL' is hard coded
 def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, replaceName, deploymentVars, addGlobalAtts=None, omitAncillary=False):
-    for i in range(len(fileIn)): 
-        print(f"Reading in file {fileIn[i]} and creating new file {fileOut[i]}.")
+    for i in range(len(fileIn)):
+        print(f"Reading in index {i} or file {fileIn[i]} and creating new file {fileOut[i]}.")
         with nc.Dataset(fileIn[i]) as src, nc.Dataset(fileOut[i], "w") as dst:
             # copy global attributes all at once via dictionary
             dst.setncatts(src.__dict__)
@@ -26,7 +26,7 @@ def createPostProcessFile(fileIn, fileOut, toExclude, originalReplaceName, repla
             if 'PSAL' in list(src.variables) and 'salinity' in list(src.variables):
                 toExclude.append('salinity')
             # copy all file data except for the excluded
-            for name, variable in src.variables.items(): 
+            for name, variable in src.variables.items():
                 if name not in toExclude:
                     print(f"Adding {name} to {fileOut[i]}.")
                     x = dst.createVariable(name, variable.datatype, variable.dimensions)
